@@ -9,12 +9,12 @@ import java.util.TimeZone;
 import org.vertx.java.core.Handler;
 import org.vertx.java.core.Vertx;
 
-import com.sendgrid.labs.vertx.schedule.Scheduler;
-import com.sendgrid.labs.vertx.schedule.Scheduler.DstAheadBehavior;
-import com.sendgrid.labs.vertx.schedule.Scheduler.DstBackBehavior;
+import com.sendgrid.labs.vertx.schedule.WeekTimeSpec;
+import com.sendgrid.labs.vertx.schedule.WeekTimeSpec.DstAheadBehavior;
+import com.sendgrid.labs.vertx.schedule.WeekTimeSpec.DstBackBehavior;
 
 class SchedulerLogic {
-    public SchedulerLogic(TimeZone tz, Date start, int weekMs, Scheduler.DstAheadBehavior aheadBehavior, Scheduler.DstBackBehavior backBehavior) {
+    public SchedulerLogic(TimeZone tz, Date start, int weekMs, WeekTimeSpec.DstAheadBehavior aheadBehavior, WeekTimeSpec.DstBackBehavior backBehavior) {
         weekTracker = new WeekTracker(tz, start, weekMs);
         this.aheadBehavior = aheadBehavior;
         this.backBehavior = backBehavior;
@@ -47,7 +47,7 @@ class SchedulerLogic {
 
     private WeekTracker weekTracker;
     private LinkedList<EventInfo> events;
-    private Scheduler.DstAheadBehavior aheadBehavior;
-    private Scheduler.DstBackBehavior backBehavior;
+    private WeekTimeSpec.DstAheadBehavior aheadBehavior;
+    private WeekTimeSpec.DstBackBehavior backBehavior;
 }
 

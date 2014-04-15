@@ -12,13 +12,10 @@ import com.sendgrid.labs.vertx.schedule.WeekTimeSpec;
 
 public class SchedulerImpl extends Scheduler {
 
-    public SchedulerImpl(Vertx vertx, TimeZone tz, DstAheadBehavior ahead, DstBackBehavior back) {
+    public SchedulerImpl(Vertx vertx) {
         this.vertx = vertx;
-        this.tz = tz;
         this.nextTimerId = 0;
         this.timers = new HashMap<Long, TimerData>();
-        this.aheadBehavior = ahead;
-        this.backBehavior = back;
     }
 
     public void stop() {
@@ -29,11 +26,11 @@ public class SchedulerImpl extends Scheduler {
     }
 
     public long setTimer(WeekTimeSpec time, Handler<java.lang.Long> handler) {
-        return start(false, time.getWeekMs(), handler);
+        return start(false, time, handler);
     }
 
     public long setPeriodic(WeekTimeSpec time, Handler<java.lang.Long> handler) {
-        return start(true, time.getWeekMs(), handler);
+        return start(true, time, handler);
     }
 
     public void cancelTimer(long id) {
@@ -45,11 +42,11 @@ public class SchedulerImpl extends Scheduler {
     }
 
 
-    private long start(final boolean periodic, int week_ms, final Handler<java.lang.Long> handler) {
+    private long start(final boolean periodic, WeekTimeSpec time, final Handler<java.lang.Long> handler) {
         final TimerData data = new TimerData();
         final long myTimerId = nextTimerId++;
 
-        final SchedulerLogic logic = new SchedulerLogic(tz, new Date(), week_ms, aheadBehavior, backBehavior);
+        final SchedulerLogic logic = new SchedulerLogic(time.getTimeZone(), new Date(), time.getWeekMs(), time.aheadBehavior(), time.backBehavior());
 
         final Handler<java.lang.Long> timerCB = new Handler<java.lang.Long>() {
             public void handle(Long vertxTimerId) {
@@ -74,10 +71,7 @@ public class SchedulerImpl extends Scheduler {
     };
 
     private Vertx vertx;
-    private TimeZone tz;
     private long nextTimerId;
     private HashMap<Long, TimerData> timers;
-    private DstAheadBehavior aheadBehavior;
-    private DstBackBehavior backBehavior;
 }
 

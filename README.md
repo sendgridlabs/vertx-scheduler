@@ -2,18 +2,33 @@
 
 A module to implement scheduling on top of Vertx timers.
 
-Initially this includes a weekly schedule, with configurable behavior on DST changes.
+Initially this includes a weekly schedule with configurable behavior on DST changes.
 
 ## Setup
 
 ## Use
 
-### Set a one shot timer to fire at next occurrence of time
+### Create a new scheduler
 
-    Scheduler scheduler = new Scheduler(vertx, TimeZone.getTime("America/New_York"));
+    Scheduler scheduler = new Scheduler(vertx);
 
-    WeekTimeSpec time = new WeekTimeSpec(Day.TUE, 2, 30, 0, 0);
-    long id = scheduler.setTimer(time, new Handler<long>() {
+### Create a time spec
+
+    // Tuesday at 2:30 AM UTC
+    WeekTimeSpec time1 = new WeekTimeSpec(Day.TUE, 2, 30, 0, 0);
+
+    // Tuesday at 2:30 AM localtime
+    WeekTimeSpec time2 = new WeekTimeSpec(TimeZone.getTimeZone("America/New_York"), Day.TUE, 2, 30, 0, 0);
+
+    // Sunday at 01:01 AM UTC
+    WeekTimeSpec time3 = new WeekTimeSpec(60*60*1000 + 60*1000);
+
+    // Sunday at 01:01 AM localtime
+    WeekTimeSpec time4 = new WeekTimeSpec(TimeZone.getTimeZone("America/New_York"), 60*60*1000 + 60*1000);
+
+### Set a one shot timer on next occurrence of time
+
+    long id = scheduler.setTimer(time1, new Handler<long>() {
         public void handle(long timerId) {
             // ...
         }
@@ -21,10 +36,7 @@ Initially this includes a weekly schedule, with configurable behavior on DST cha
 
 ### Set a periodic timer to fire on every occurrence of time
 
-    Scheduler scheduler = new Scheduler(vertx, TimeZone.getTime("America/New_York"));
-
-    WeekTimeSpec time = new WeekTimeSpec(Day.TUE, 2, 30, 0, 0);
-    long id = scheduler.setPeriodic(time, new Handler<long>() {
+    long id = scheduler.setPeriodic(time2, new Handler<long>() {
         public void handle(long timerId) {
             // ...
         }
@@ -38,13 +50,16 @@ Initially this includes a weekly schedule, with configurable behavior on DST cha
 
 Behavior on DST changes is configurable.  Default is to skip when time changes ahead and to run both when time changes back.
 
-    Scheduler scheduler = new Scheduler(vertx, TimeZone.getTime("America/New_York"), DstAheadBehavior.DST_AHEAD_SKIP, DstBackBehavior.DST_BACK_BOTH_HOURS);
+    WeekTimeSpec time1 = new WeekTimeSpec(TimeZone.getTime("America/New_York", Day.TUE, 2, 30, 0, 0, DstAheadBehavior.DST_AHEAD_SKIP, DstBackBehavior.DST_BACK_BOTH_HOURS);
 
-#### Time changes ahead
+#### Time change ahead
 The scheduler can either skip any events during the missing hour (DST_AHEAD_SKIP), or run them on the next hour (DST_AHEAD_NEXT_HOUR).
 
-#### Time changes back
+#### Time change back
 The scheduler can callback on the first occurrence of the duplicated hour (DST_BACK_FIRST_HOUR), just the second (DST_BACK_SECOND_HOUR), or both (DST_BACK_BOTH_HOURS).
 
+### Dispose of scheduler
+
+    scheduler.stop();
 
 

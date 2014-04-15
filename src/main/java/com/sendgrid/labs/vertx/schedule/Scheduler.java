@@ -1,16 +1,11 @@
 package com.sendgrid.labs.vertx.schedule;
 
-import java.util.TimeZone;
-
 import org.vertx.java.core.Handler;
 import org.vertx.java.core.Vertx;
 
 import com.sendgrid.labs.vertx.schedule.impl.SchedulerImpl;
 
 abstract public class Scheduler {
-
-    public enum DstAheadBehavior { DST_AHEAD_SKIP, DST_AHEAD_NEXT_HOUR };
-    public enum DstBackBehavior { DST_BACK_BOTH_HOURS, DST_BACK_FIRST_HOUR, DST_BACK_SECOND_HOUR };
 
     /**
      * Stop processing all timers
@@ -38,16 +33,10 @@ abstract public class Scheduler {
     abstract public void cancelTimer(long id);
 
     /**
-     * Creates a new schedule using the given {@code tz}
+     * Creates a new scheduler
      * @return The new scheduler
      */
-    public static Scheduler create(Vertx vertx, TimeZone tz) { return new SchedulerImpl(vertx, tz, DstAheadBehavior.DST_AHEAD_SKIP, DstBackBehavior.DST_BACK_BOTH_HOURS); }
-
-    /**
-     * Creates a new schedule using the given {@code tz}
-     * @return The new scheduler
-     */
-    public static Scheduler create(Vertx vertx, TimeZone tz, DstAheadBehavior ahead, DstBackBehavior back) { return new SchedulerImpl(vertx, tz, ahead, back); }
+    public static Scheduler create(Vertx vertx) { return new SchedulerImpl(vertx); }
 
 }
 
