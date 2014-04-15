@@ -1,4 +1,4 @@
-package com.sendgrid.labs.vertx.schedule.impl;
+package com.sendgrid.labs.vertx.schedule;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -9,12 +9,11 @@ import java.util.TimeZone;
 import org.vertx.java.core.Handler;
 import org.vertx.java.core.Vertx;
 
-import com.sendgrid.labs.vertx.schedule.WeekTimeSpec;
-import com.sendgrid.labs.vertx.schedule.WeekTimeSpec.DstAheadBehavior;
-import com.sendgrid.labs.vertx.schedule.WeekTimeSpec.DstBackBehavior;
+import com.sendgrid.labs.vertx.schedule.TimeOfWeek.DstAheadBehavior;
+import com.sendgrid.labs.vertx.schedule.TimeOfWeek.DstBackBehavior;
 
 class SchedulerLogic {
-    public SchedulerLogic(TimeZone tz, Date start, int weekMs, WeekTimeSpec.DstAheadBehavior aheadBehavior, WeekTimeSpec.DstBackBehavior backBehavior) {
+    public SchedulerLogic(TimeZone tz, Date start, int weekMs, TimeOfWeek.DstAheadBehavior aheadBehavior, TimeOfWeek.DstBackBehavior backBehavior) {
         weekTracker = new WeekTracker(tz, start, weekMs);
         this.aheadBehavior = aheadBehavior;
         this.backBehavior = backBehavior;
@@ -47,7 +46,7 @@ class SchedulerLogic {
 
     private WeekTracker weekTracker;
     private LinkedList<EventInfo> events;
-    private WeekTimeSpec.DstAheadBehavior aheadBehavior;
-    private WeekTimeSpec.DstBackBehavior backBehavior;
+    private TimeOfWeek.DstAheadBehavior aheadBehavior;
+    private TimeOfWeek.DstBackBehavior backBehavior;
 }
 

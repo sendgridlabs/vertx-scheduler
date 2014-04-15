@@ -1,4 +1,4 @@
-package com.sendgrid.labs.vertx.schedule.impl;
+package com.sendgrid.labs.vertx.schedule;
 
 import java.util.Calendar;
 import java.util.Date;

@@ -3,8 +3,9 @@ package com.sendgrid.labs.vertx.schedule;
 import org.vertx.java.core.Handler;
 import org.vertx.java.core.Vertx;
 
-import com.sendgrid.labs.vertx.schedule.impl.SchedulerImpl;
-
+/**
+ * Interface to schedule/cancel timers
+ */
 abstract public class Scheduler {
 
     /**
@@ -17,14 +18,14 @@ abstract public class Scheduler {
      * the id of the timer.
      * @return the unique ID of the timer
      */
-    abstract public long setTimer(WeekTimeSpec time, Handler<java.lang.Long> handler);
+    abstract public long setTimer(TimeOfWeek time, Handler<java.lang.Long> handler);
 
     /**
      * Set a periodic timer to fire on every occurance of specified time, at which point {@code handler} will be called with
      * the id of the timer.
      * @return the unique ID of the timer
      */
-    abstract public long setPeriodic(WeekTimeSpec time, Handler<java.lang.Long> handler);
+    abstract public long setPeriodic(TimeOfWeek time, Handler<java.lang.Long> handler);
 
     /**
      * Cancel the timer with the specified {@code id}. Returns {@code} true if the timer was successfully cancelled, or
@@ -38,5 +39,7 @@ abstract public class Scheduler {
      */
     public static Scheduler create(Vertx vertx) { return new SchedulerImpl(vertx); }
 
+
+    protected Scheduler() {}
 }
 

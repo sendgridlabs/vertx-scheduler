@@ -1,4 +1,4 @@
-package com.sendgrid.labs.vertx.schedule.impl;
+package com.sendgrid.labs.vertx.schedule;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -7,10 +7,7 @@ import java.util.TimeZone;
 import org.vertx.java.core.Handler;
 import org.vertx.java.core.Vertx;
 
-import com.sendgrid.labs.vertx.schedule.Scheduler;
-import com.sendgrid.labs.vertx.schedule.WeekTimeSpec;
-
-public class SchedulerImpl extends Scheduler {
+class SchedulerImpl extends Scheduler {
 
     public SchedulerImpl(Vertx vertx) {
         this.vertx = vertx;
@@ -25,11 +22,11 @@ public class SchedulerImpl extends Scheduler {
         timers.clear();
     }
 
-    public long setTimer(WeekTimeSpec time, Handler<java.lang.Long> handler) {
+    public long setTimer(TimeOfWeek time, Handler<java.lang.Long> handler) {
         return start(false, time, handler);
     }
 
-    public long setPeriodic(WeekTimeSpec time, Handler<java.lang.Long> handler) {
+    public long setPeriodic(TimeOfWeek time, Handler<java.lang.Long> handler) {
         return start(true, time, handler);
     }
 
@@ -42,7 +39,7 @@ public class SchedulerImpl extends Scheduler {
     }
 
 
-    private long start(final boolean periodic, WeekTimeSpec time, final Handler<java.lang.Long> handler) {
+    private long start(final boolean periodic, TimeOfWeek time, final Handler<java.lang.Long> handler) {
         final TimerData data = new TimerData();
         final long myTimerId = nextTimerId++;
 

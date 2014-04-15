@@ -12,19 +12,19 @@ Initially this includes a weekly schedule with configurable behavior on DST chan
 
     Scheduler scheduler = new Scheduler(vertx);
 
-### Create a time spec
+### Create a time of week
 
     // Tuesday at 2:30 AM UTC
-    WeekTimeSpec time1 = new WeekTimeSpec(Day.TUE, 2, 30, 0, 0);
+    TimeOfWeek time1 = new TimeOfWeek(Day.TUE, 2, 30, 0, 0);
 
     // Tuesday at 2:30 AM localtime
-    WeekTimeSpec time2 = new WeekTimeSpec(TimeZone.getTimeZone("America/New_York"), Day.TUE, 2, 30, 0, 0);
+    TimeOfWeek time2 = new TimeOfWeek(TimeZone.getTimeZone("America/New_York"), Day.TUE, 2, 30, 0, 0);
 
     // Sunday at 01:01 AM UTC
-    WeekTimeSpec time3 = new WeekTimeSpec(60*60*1000 + 60*1000);
+    TimeOfWeek time3 = new TimeOfWeek(60*60*1000 + 60*1000);
 
     // Sunday at 01:01 AM localtime
-    WeekTimeSpec time4 = new WeekTimeSpec(TimeZone.getTimeZone("America/New_York"), 60*60*1000 + 60*1000);
+    TimeOfWeek time4 = new TimeOfWeek(TimeZone.getTimeZone("America/New_York"), 60*60*1000 + 60*1000);
 
 ### Set a one shot timer on next occurrence of time
 
@@ -50,7 +50,7 @@ Initially this includes a weekly schedule with configurable behavior on DST chan
 
 Behavior on DST changes is configurable.  Default is to skip when time changes ahead and to run both when time changes back.
 
-    WeekTimeSpec time1 = new WeekTimeSpec(TimeZone.getTime("America/New_York", Day.TUE, 2, 30, 0, 0, DstAheadBehavior.DST_AHEAD_SKIP, DstBackBehavior.DST_BACK_BOTH_HOURS);
+    TimeOfWeek time1 = new TimeOfWeek(TimeZone.getTime("America/New_York", Day.TUE, 2, 30, 0, 0, DstAheadBehavior.DST_AHEAD_SKIP, DstBackBehavior.DST_BACK_BOTH_HOURS);
 
 #### Time change ahead
 The scheduler can either skip any events during the missing hour (DST_AHEAD_SKIP), or run them on the next hour (DST_AHEAD_NEXT_HOUR).

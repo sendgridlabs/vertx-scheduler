@@ -1,13 +1,10 @@
-package com.sendgrid.labs.vertx.schedule.impl;
+package com.sendgrid.labs.vertx.schedule;
 
 import java.util.Date;
 
-import com.sendgrid.labs.vertx.schedule.Scheduler;
-import com.sendgrid.labs.vertx.schedule.WeekTimeSpec;
+class Utils {
 
-public class Utils {
-
-    static public int convertWeekTime(WeekTimeSpec.Day day, int hour, int minute, int sec, int ms) {
+    static public int convertWeekTime(TimeOfWeek.Day day, int hour, int minute, int sec, int ms) {
         return days(day_num(day)) + hours(hour) + minutes(minute) + seconds(sec) + ms;
     }
 
@@ -21,7 +18,7 @@ public class Utils {
 
 
 
-    static private int day_num(WeekTimeSpec.Day d) {
+    static private int day_num(TimeOfWeek.Day d) {
         switch(d) {
             case SUN:
                 return 0;

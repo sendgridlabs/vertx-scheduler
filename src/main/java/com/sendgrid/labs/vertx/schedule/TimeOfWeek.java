@@ -2,11 +2,10 @@ package com.sendgrid.labs.vertx.schedule;
 
 import java.util.TimeZone;
 
-import com.sendgrid.labs.vertx.schedule.impl.Utils;
-
-/** Represents a weekly time (i.e. Monday at 7:00 PM in EDT)
+/**
+ * Represents a time of week (i.e. Monday at 7:00 PM in EDT)
  */
-public class WeekTimeSpec {
+public class TimeOfWeek {
 
     public enum Day { SUN, MON, TUE, WED, THU, FRI, SAT };
     public enum DstAheadBehavior { DST_AHEAD_SKIP, DST_AHEAD_NEXT_HOUR };
@@ -15,22 +14,22 @@ public class WeekTimeSpec {
     /** Construct UTC time using number of milliseconds since the beginning
       * of the week (Sunday 12:00 AM)
      */
-    public static WeekTimeSpec create(int weekMs) {
+    public static TimeOfWeek create(int weekMs) {
         return create(TimeZone.getTimeZone("UTC"), weekMs);
     }
 
     /** Construct time in timezone using number of milliseconds since the beginning
       * of the week (Sunday 12:00 AM)
      */
-    public static WeekTimeSpec create(TimeZone tz, int weekMs) {
+    public static TimeOfWeek create(TimeZone tz, int weekMs) {
         return create(tz, weekMs, DstAheadBehavior.DST_AHEAD_SKIP, DstBackBehavior.DST_BACK_BOTH_HOURS);
     }
 
     /** Construct time in timezone using number of milliseconds since the beginning
       * of the week (Sunday 12:00 AM) with DST behavior
      */
-    public static WeekTimeSpec create(TimeZone tz, int weekMs, DstAheadBehavior ahead, DstBackBehavior back) {
-        WeekTimeSpec w = new WeekTimeSpec();
+    public static TimeOfWeek create(TimeZone tz, int weekMs, DstAheadBehavior ahead, DstBackBehavior back) {
+        TimeOfWeek w = new TimeOfWeek();
         w.weekMs = weekMs;
         w.tz = tz;
         w.ahead = ahead;
@@ -40,19 +39,19 @@ public class WeekTimeSpec {
 
     /** Construct UTC time using individual components
      */
-    public static WeekTimeSpec create(Day day, int hour, int minute, int sec, int ms) {
+    public static TimeOfWeek create(Day day, int hour, int minute, int sec, int ms) {
         return create(TimeZone.getTimeZone("UTC"), Utils.convertWeekTime(day, hour, minute, sec, ms));
     }
 
     /** Construct time in timezone using individual components
      */
-    public static WeekTimeSpec create(TimeZone tz, Day day, int hour, int minute, int sec, int ms) {
+    public static TimeOfWeek create(TimeZone tz, Day day, int hour, int minute, int sec, int ms) {
         return create(tz, Utils.convertWeekTime(day, hour, minute, sec, ms));
     }
 
     /** Construct time in timezone using individual components with DST behavior
      */
-    public static WeekTimeSpec create(TimeZone tz, Day day, int hour, int minute, int sec, int ms, DstAheadBehavior ahead, DstBackBehavior back) {
+    public static TimeOfWeek create(TimeZone tz, Day day, int hour, int minute, int sec, int ms, DstAheadBehavior ahead, DstBackBehavior back) {
         return create(tz, Utils.convertWeekTime(day, hour, minute, sec, ms), ahead, back);
     }
 
@@ -80,7 +79,7 @@ public class WeekTimeSpec {
         return back;
     }
 
-    private WeekTimeSpec() { }
+    private TimeOfWeek() { }
 
     private int weekMs;
     private TimeZone tz;
