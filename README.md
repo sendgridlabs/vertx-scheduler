@@ -4,7 +4,18 @@ A module to implement scheduling on top of Vertx timers.
 
 Initially this includes a weekly schedule with configurable behavior on DST changes.
 
-## Setup
+## Installation
+
+    ...
+    dependencies {
+      ...
+      compile 'com.sendgrid:sendgrid-java:0.2.0'
+    }
+
+    repositories {
+      mavenCentral()
+    }
+    ...
 
 ## Use
 
