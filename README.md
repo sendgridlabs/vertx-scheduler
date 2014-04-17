@@ -28,23 +28,23 @@ Initially this includes a weekly schedule with configurable behavior on DST chan
 
 ### Set a one shot timer on next occurrence of time
 
-    long id = scheduler.setTimer(time1, new Handler<long>() {
-        public void handle(long timerId) {
+    Timer timer1 = scheduler.setTimer(time1, new Handler<Timer>() {
+        public void handle(Timer t) {
             // ...
         }
     });
 
 ### Set a periodic timer to fire on every occurrence of time
 
-    long id = scheduler.setPeriodic(time2, new Handler<long>() {
-        public void handle(long timerId) {
+    Timer timer2 = scheduler.setPeriodic(time2, new Handler<Timer>() {
+        public void handle(Timer t) {
             // ...
         }
     });
 
 ### Cancel a timer
 
-    scheduler.cancelTimer(timerId);
+    scheduler.cancelTimer(timer1);
 
 ### Daylight Saving Time
 

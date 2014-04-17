@@ -16,22 +16,21 @@ abstract public class Scheduler {
     /**
      * Set a one-shot timer to fire at next occurance of specified time, at which point {@code handler} will be called with
      * the id of the timer.
-     * @return the unique ID of the timer
+     * @return the timer instance
      */
-    abstract public long setTimer(TimeOfWeek time, Handler<java.lang.Long> handler);
+    abstract public Timer setTimer(TimeOfWeek time, Handler<Timer> handler);
 
     /**
      * Set a periodic timer to fire on every occurance of specified time, at which point {@code handler} will be called with
      * the id of the timer.
-     * @return the unique ID of the timer
+     * @return the timer instance
      */
-    abstract public long setPeriodic(TimeOfWeek time, Handler<java.lang.Long> handler);
+    abstract public Timer setPeriodic(TimeOfWeek time, Handler<Timer> handler);
 
     /**
-     * Cancel the timer with the specified {@code id}. Returns {@code} true if the timer was successfully cancelled, or
-     * {@code false} if the timer does not exist.
+     * Cancel the specified {@code timer}.
      */
-    abstract public void cancelTimer(long id);
+    abstract public void cancelTimer(Timer timer);
 
     /**
      * Creates a new scheduler

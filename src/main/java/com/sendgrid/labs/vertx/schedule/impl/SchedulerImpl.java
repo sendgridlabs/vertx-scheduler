@@ -11,8 +11,7 @@ class SchedulerImpl extends Scheduler {
 
     public SchedulerImpl(Vertx vertx) {
         this.vertx = vertx;
-        this.nextTimerId = 0;
-        this.timers = new HashMap<Long, TimerData>();
+        this.timers = new HashMap<Timer, TimerData>();
     }
 
     public void stop() {
@@ -22,45 +21,45 @@ class SchedulerImpl extends Scheduler {
         timers.clear();
     }
 
-    public long setTimer(TimeOfWeek time, Handler<java.lang.Long> handler) {
+    public Timer setTimer(TimeOfWeek time, Handler<Timer> handler) {
         return start(false, time, handler);
     }
 
-    public long setPeriodic(TimeOfWeek time, Handler<java.lang.Long> handler) {
+    public Timer setPeriodic(TimeOfWeek time, Handler<Timer> handler) {
         return start(true, time, handler);
     }
 
-    public void cancelTimer(long id) {
-        if(timers.containsKey(id)) {
-            TimerData timer = timers.get(id);
-            vertx.cancelTimer(timer.vertxTimerId);
-            timers.remove(id);
+    public void cancelTimer(Timer timer) {
+        if(timers.containsKey(timer)) {
+            TimerData data = timers.get(timer);
+            vertx.cancelTimer(data.vertxTimerId);
+            timers.remove(timer);
         }
     }
 
 
-    private long start(final boolean periodic, TimeOfWeek time, final Handler<java.lang.Long> handler) {
+    private Timer start(final boolean periodic, TimeOfWeek time, final Handler<Timer> handler) {
         final TimerData data = new TimerData();
-        final long myTimerId = nextTimerId++;
+        final Timer timer = new Timer();
 
         final SchedulerLogic logic = new SchedulerLogic(time.getTimeZone(), new Date(), time.getWeekMs(), time.aheadBehavior(), time.backBehavior());
 
         final Handler<java.lang.Long> timerCB = new Handler<java.lang.Long>() {
             public void handle(Long vertxTimerId) {
-                handler.handle(myTimerId);
+                handler.handle(timer);
                 if(periodic) {
                     Date d = logic.next();
                     data.vertxTimerId = vertx.setTimer(Utils.getMsUntilDate(logic.next()), this);
                 } else {
-                    timers.remove(myTimerId);
+                    timers.remove(timer);
                 }
             }
         };
 
         data.vertxTimerId = vertx.setTimer(Utils.getMsUntilDate(logic.next()), timerCB);
-        timers.put(myTimerId, data);
+        timers.put(timer, data);
 
-        return myTimerId;
+        return timer;
     }
 
     private class TimerData {
@@ -68,7 +67,6 @@ class SchedulerImpl extends Scheduler {
     };
 
     private Vertx vertx;
-    private long nextTimerId;
-    private HashMap<Long, TimerData> timers;
+    private HashMap<Timer, TimerData> timers;
 }
 
