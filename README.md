@@ -9,7 +9,7 @@ Initially this includes a weekly schedule with configurable behavior on DST chan
     ...
     dependencies {
       ...
-      compile 'com.sendgrid:sendgrid-java:0.2.0'
+      compile "com.sendgrid.labs:vertx-scheduler:$schedulerVersion"
     }
 
     repositories {
