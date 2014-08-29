@@ -48,7 +48,6 @@ class SchedulerImpl extends Scheduler {
             public void handle(Long vertxTimerId) {
                 handler.handle(timer);
                 if(periodic) {
-                    Date d = logic.next();
                     data.vertxTimerId = vertx.setTimer(Utils.getMsUntilDate(logic.next()), this);
                 } else {
                     timers.remove(timer);
