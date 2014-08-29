@@ -46,17 +46,20 @@ class SchedulerImpl extends Scheduler {
 
         final Handler<java.lang.Long> timerCB = new Handler<java.lang.Long>() {
             public void handle(Long vertxTimerId) {
-                handler.handle(timer);
                 if(periodic) {
-                    Date d = logic.next();
-                    data.vertxTimerId = vertx.setTimer(Utils.getMsUntilDate(logic.next()), this);
+                    timer.next = logic.next();
+                    handler.handle(timer);
+                    data.vertxTimerId = vertx.setTimer(Utils.getMsUntilDate(timer.next), this);
                 } else {
+                    timer.next = null;
+                    handler.handle(timer);
                     timers.remove(timer);
                 }
             }
         };
 
-        data.vertxTimerId = vertx.setTimer(Utils.getMsUntilDate(logic.next()), timerCB);
+        timer.next = logic.next();
+        data.vertxTimerId = vertx.setTimer(Utils.getMsUntilDate(timer.next), timerCB);
         timers.put(timer, data);
 
         return timer;
