@@ -6,8 +6,8 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.TimeZone;
 
-import org.vertx.java.core.Handler;
-import org.vertx.java.core.Vertx;
+import io.vertx.core.Handler;
+import io.vertx.core.Vertx;
 
 import com.sendgrid.labs.vertx.schedule.TimeOfWeek.DstAheadBehavior;
 import com.sendgrid.labs.vertx.schedule.TimeOfWeek.DstBackBehavior;
