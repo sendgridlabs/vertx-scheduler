@@ -4,8 +4,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.TimeZone;
 
-import org.vertx.java.core.Handler;
-import org.vertx.java.core.Vertx;
+import io.vertx.core.Handler;
+import io.vertx.core.Vertx;
 
 class SchedulerImpl extends Scheduler {
 
